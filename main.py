@@ -9,15 +9,6 @@ import json
 from tornado.options import define, options
 define('port', default = 8967, help = "run on the given port", type = int)
 
-'''class IndexHandler(tornado.web.RequestHandler):
-    @tornado.web.asynchronous
-    @tornado.gen.engine
-    def get(self):
-        client = tornado.httpclient.AsyncHTTPClient()
-        response = yield tornado.gen.Task(client.fetch, 'http://www.weibo.cn')
-        self.write('hello, world')
-        self.finish()'''
-
 class IndexHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
     @tornado.gen.engine
@@ -38,7 +29,7 @@ class IndexHandler(tornado.web.RequestHandler):
         if weather in umbrella:
             self.write('记得带伞')
         else:
-            self.write(str(weather) + '不用带伞')
+            self.write('不用带伞')
         self.finish()
 
 if __name__ == '__main__':
