@@ -29,7 +29,7 @@ class IndexHandler(tornado.web.RequestHandler):
 
         client = tornado.httpclient.AsyncHTTPClient()
         geoIpResponse = yield tornado.gen.Task(client.fetch, 'https://freegeoip.net/json/' + ipAddr)
-        geoInfo = json.loads(geoIpResponse.body.encode('utf-8'))
+        geoInfo = json.loads(str(geoIpResponse.body).encode('utf-8'))
         latitude, longitude = geoInfo['latitude'], geoInfo['longitude']
         self.write(latitude + longitude)
 
