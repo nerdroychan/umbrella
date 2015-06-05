@@ -30,7 +30,7 @@ class IndexHandler(tornado.web.RequestHandler):
         if weather in umbrella:
             self.render('index.html', value = 'Yes!')
         else:
-            self.render('index.html', value = str(weather) + 'No.')
+            self.render('index.html', value = 'No.')
         self.finish()
 
 if __name__ == '__main__':
