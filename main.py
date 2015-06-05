@@ -4,6 +4,7 @@ import tornado.httpserver
 import tornado.options
 import tornado.httpclient
 import tornado.gen
+import json
 
 from tornado.options import define, options
 define('port', default = 8967, help = "run on the given port", type = int)
@@ -18,12 +19,19 @@ define('port', default = 8967, help = "run on the given port", type = int)
         self.finish()'''
 
 class IndexHandler(tornado.web.RequestHandler):
+    @tornado.web.asynchronous
+    @tornado.gen.engine
     def get(self):
         try:
             ipAddr = self.request.headers['X-Forwarded-For']
         except KeyError:
             ipAddr = self.request.remote_ip
-        self.write(ipAddr)
+
+        client = tornado.httpclient.AsyncHTTPClient()
+        geoIpResponse = yield tornado.gen.Task(client.fetch, 'https://freegeoip.net/json/' + ipAddr)
+        geoInfo = json.loads(geoIpResponse)
+        latitude, longitude = geoInfo['latitude'], geoInfo['longitude']
+        self.write(latitude + longitude)
 
 if __name__ == '__main__':
     tornado.options.parse_command_line()
