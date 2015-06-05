@@ -19,7 +19,7 @@ define('port', default = 8967, help = "run on the given port", type = int)
 
 class IndexHandler(tornado.web.RequestHandler):
     def get(self):
-        ipAddr = self.request.headers['HTTP_X_FORWARDED_FOR']
+        ipAddr = self.request.headers['X-Forwarded-For']
         self.write(ipAddr)
 
 if __name__ == '__main__':
